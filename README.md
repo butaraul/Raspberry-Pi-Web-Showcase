@@ -1,8 +1,8 @@
 # Raspberry-Pi-Web-Showcase
-https://img.shields.io/badge/License-MIT-blue.svg
-https://img.shields.io/badge/Made%2520with-Three.js-000000.svg?logo=three.js&logoColor=white
-https://img.shields.io/badge/WebGL-2.0-990000.svg?logo=webgl&logoColor=white
-https://img.shields.io/github/stars/butaraul/raspberry-pi-4-viewer.svg?style=social
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Made with Three.js](https://img.shields.io/badge/Made%20with-Three.js-000000.svg?logo=three.js&logoColor=white)](https://threejs.org/)
+[![WebGL](https://img.shields.io/badge/WebGL-2.0-990000.svg?logo=webgl&logoColor=white)](https://get.webgl.org/)
+[![GitHub stars](https://img.shields.io/github/stars/butaraul/Raspberry-Pi-Web-Showcase.svg?style=social)](https://github.com/butaraul/Raspberry-Pi-Web-Showcase/stargazers)
 
 A millimeter-accurate, interactive 3D WebGL visualization of the Raspberry Pi 4 Model B PCB. Built with Three.js, this single-file application lets you orbit, zoom, and inspect every component on the board with real-time tooltips and a detail panel.
 
