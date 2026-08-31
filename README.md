@@ -15,7 +15,7 @@ type Board {
   usb: 2× USB 3.0 + 2× USB 2.0
   gpio: 40-pin header (27 usable pins)
 }
-## Quick start
+# Quick start
 
 Open index.html in your browser:
 
