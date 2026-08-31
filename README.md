@@ -15,11 +15,10 @@ type Board {
   usb: 2× USB 3.0 + 2× USB 2.0
   gpio: 40-pin header (27 usable pins)
 }
-Quick start
+## Quick start
 
 Open index.html in your browser:
 
-bash
 # Using Python 3
 python -m http.server 8000
 
@@ -30,7 +29,7 @@ npx serve
 # Right-click index.html → Open with Live Server
 Navigate to http://localhost:8000 and start exploring the board in 3D.
 
-bash
+
 # Drag to orbit, scroll to zoom, click any component
 Features
 
