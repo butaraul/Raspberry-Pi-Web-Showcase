@@ -44,7 +44,7 @@ Modern Dark Theme: custom dark UI with glass-morphism effects
 Single-file Distribution: everything (HTML, CSS, JS, 3D model) in one file
 Project Structure
 
-text
+
 raspberry-pi-4-viewer/
 ├── index.html              # Single-file application
 │                           # - HTML structure
@@ -103,17 +103,10 @@ Error Handling: the model loads with a fallback veil; if loading fails, the user
 Accessibility: the canvas includes ARIA labels for screen readers; keyboard controls are supported (arrow keys, plus/minus).
 Tests
 
-bash
 # No automated tests currently - manual testing recommended
 # Test on different browsers:
 # - Chrome (recommended)
 # - Firefox
 # - Safari
 # - Mobile browsers
-Test the following interactions:
-
-□ Drag to orbit from all angles
-□ Scroll to zoom in/out smoothly
-□ Click a component → detail panel updates
-□ Hover a component → tooltip appears
 
