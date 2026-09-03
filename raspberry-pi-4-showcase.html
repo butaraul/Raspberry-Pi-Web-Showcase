@@ -4,57 +4,123 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Raspberry Pi 4 Model B</title>
+<script>
+  try{
+    var savedTheme = localStorage.getItem('pi-theme');
+    if(savedTheme === 'light' || savedTheme === 'dark'){
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  }catch(e){}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Public+Sans:wght@400;500;600;700&family=Fragment+Mono&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fragment+Mono&display=swap">
 <style>
+  /* ==========================================================================
+     THEME TOKENS — light is the default (:root); dark answers to the OS
+     preference unless the visitor picked explicitly, and an explicit choice
+     (data-theme) always wins in either direction. See the toggle in the nav.
+     ========================================================================== */
   :root{
-    --bg-0:#0a0b08;
-    --bg-1:#141610;
-    --bg-2:#1f2117;
-    --ink:#f3efe4;
-    --ink-soft:#cac5b5;
-    --ink-dim:#8f8b7b;
-    --accent:#d1445f;
-    --accent-soft:#ef9fae;
-    --accent-glass:rgba(209,68,95,.16);
-    --copper:#d4a94f;
-    --circuit-blue:#5b9bd6;
-    --line:rgba(243,239,228,.1);
-    --line-strong:rgba(243,239,228,.22);
-    --glass:rgba(255,255,255,.045);
-    --glass-strong:rgba(255,255,255,.09);
-    --shadow:rgba(0,0,0,.55);
+    --bg-0:#ffffff;
+    --bg-1:#f5f5f3;
+    --bg-2:#ececE7;
+    --ink:#1d1d1f;
+    --ink-soft:#48484d;
+    --ink-dim:#6e6e73;
+    --accent:#c23c50;
+    --accent-soft:#a92f43;
+    --accent-glass:rgba(194,60,80,.1);
+    --copper:#93691f;
+    --circuit-blue:#2f6fb0;
+    --line:rgba(0,0,0,.09);
+    --line-strong:rgba(0,0,0,.18);
+    --glass:rgba(255,255,255,.55);
+    --glass-strong:rgba(255,255,255,.82);
+    --shadow:rgba(0,0,0,.16);
+    --nav-bg:rgba(255,255,255,.72);
+    --chip-bg:rgba(255,255,255,.55);
+    --wash-1:rgba(149,115,209,.05);
+    --wash-2:rgba(63,182,172,.045);
+    --wash-3:rgba(209,68,95,.04);
+    --trace-rgb:20,20,18;
     /* one soft, off-screen light (upper-left) — every raised surface casts
        toward lower-right at a shared angle, so the whole page reads as one
        lit scene rather than a pile of unrelated drop-shadows */
-    --elev-1:0 1px 0 rgba(255,255,255,.035) inset,0 1px 2px rgba(0,0,0,.35),0 8px 18px -10px rgba(0,0,0,.55);
-    --elev-2:0 1px 0 rgba(255,255,255,.04) inset,0 2px 5px rgba(0,0,0,.4),0 18px 36px -16px rgba(0,0,0,.6);
-    --elev-3:0 1px 0 rgba(255,255,255,.045) inset,0 4px 10px rgba(0,0,0,.45),0 34px 70px -26px rgba(0,0,0,.65);
-    --radius-s:2px;
-    --radius-m:4px;
-    --font-display:'Fraunces',Georgia,'Times New Roman',serif;
-    --font-body:'Public Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --elev-1:0 1px 0 rgba(255,255,255,.6) inset,0 1px 2px rgba(0,0,0,.055),0 8px 18px -10px rgba(0,0,0,.1);
+    --elev-2:0 1px 0 rgba(255,255,255,.7) inset,0 2px 5px rgba(0,0,0,.06),0 18px 36px -16px rgba(0,0,0,.14);
+    --elev-3:0 1px 0 rgba(255,255,255,.8) inset,0 4px 10px rgba(0,0,0,.07),0 34px 70px -26px rgba(0,0,0,.18);
+    --radius-s:8px;
+    --radius-m:16px;
+    --radius-pill:980px;
+    --font-display:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Helvetica,Arial,sans-serif;
+    --font-body:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Helvetica,Arial,sans-serif;
     --font-mono:'Fragment Mono',ui-monospace,'SF Mono',Consolas,monospace;
 
     /* component category palette — the board's own colour-coding system */
-    --cat-core:#d1445f;
-    --cat-networking:#3fa46f;
-    --cat-io:#4f8fd6;
-    --cat-video:#9573d1;
-    --cat-expansion:#d98a3d;
-    --cat-storage:#3fb6ac;
-    --cat-power:#d4a94f;
+    --cat-core:#b8324a;
+    --cat-networking:#2e8659;
+    --cat-io:#2f6fb0;
+    --cat-video:#7454b0;
+    --cat-expansion:#a8621c;
+    --cat-storage:#1f7d76;
+    --cat-power:#93691f;
+    color-scheme:light;
+  }
+
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg-0:#0a0b08; --bg-1:#141610; --bg-2:#1f2117;
+      --ink:#f3efe4; --ink-soft:#cac5b5; --ink-dim:#8f8b7b;
+      --accent:#d1445f; --accent-soft:#ef9fae; --accent-glass:rgba(209,68,95,.16);
+      --copper:#d4a94f; --circuit-blue:#5b9bd6;
+      --line:rgba(243,239,228,.1); --line-strong:rgba(243,239,228,.22);
+      --glass:rgba(255,255,255,.045); --glass-strong:rgba(255,255,255,.09);
+      --shadow:rgba(0,0,0,.55);
+      --nav-bg:rgba(10,11,8,.62); --chip-bg:rgba(10,11,7,.4);
+      --wash-1:rgba(149,115,209,.07); --wash-2:rgba(63,182,172,.06); --wash-3:rgba(209,68,95,.05);
+      --trace-rgb:243,239,228;
+      --elev-1:0 1px 0 rgba(255,255,255,.035) inset,0 1px 2px rgba(0,0,0,.35),0 8px 18px -10px rgba(0,0,0,.55);
+      --elev-2:0 1px 0 rgba(255,255,255,.04) inset,0 2px 5px rgba(0,0,0,.4),0 18px 36px -16px rgba(0,0,0,.6);
+      --elev-3:0 1px 0 rgba(255,255,255,.045) inset,0 4px 10px rgba(0,0,0,.45),0 34px 70px -26px rgba(0,0,0,.65);
+      --cat-core:#d1445f; --cat-networking:#3fa46f; --cat-io:#4f8fd6;
+      --cat-video:#9573d1; --cat-expansion:#d98a3d; --cat-storage:#3fb6ac; --cat-power:#d4a94f;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg-0:#0a0b08; --bg-1:#141610; --bg-2:#1f2117;
+    --ink:#f3efe4; --ink-soft:#cac5b5; --ink-dim:#8f8b7b;
+    --accent:#d1445f; --accent-soft:#ef9fae; --accent-glass:rgba(209,68,95,.16);
+    --copper:#d4a94f; --circuit-blue:#5b9bd6;
+    --line:rgba(243,239,228,.1); --line-strong:rgba(243,239,228,.22);
+    --glass:rgba(255,255,255,.045); --glass-strong:rgba(255,255,255,.09);
+    --shadow:rgba(0,0,0,.55);
+    --nav-bg:rgba(10,11,8,.62); --chip-bg:rgba(10,11,7,.4);
+    --wash-1:rgba(149,115,209,.07); --wash-2:rgba(63,182,172,.06); --wash-3:rgba(209,68,95,.05);
+    --trace-rgb:243,239,228;
+    --elev-1:0 1px 0 rgba(255,255,255,.035) inset,0 1px 2px rgba(0,0,0,.35),0 8px 18px -10px rgba(0,0,0,.55);
+    --elev-2:0 1px 0 rgba(255,255,255,.04) inset,0 2px 5px rgba(0,0,0,.4),0 18px 36px -16px rgba(0,0,0,.6);
+    --elev-3:0 1px 0 rgba(255,255,255,.045) inset,0 4px 10px rgba(0,0,0,.45),0 34px 70px -26px rgba(0,0,0,.65);
+    --cat-core:#d1445f; --cat-networking:#3fa46f; --cat-io:#4f8fd6;
+    --cat-video:#9573d1; --cat-expansion:#d98a3d; --cat-storage:#3fb6ac; --cat-power:#d4a94f;
     color-scheme:dark;
+  }
+  :root,[data-theme]{ transition:background-color .35s ease; }
+  body,.topbar,.viewport-shell,.info-card,.detail-panel,.contact-panel,.legend-chip,.model-tab,.btn-pill{
+    transition:background-color .3s ease,border-color .3s ease,color .3s ease,box-shadow .3s ease;
   }
 
   *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+  #viewport-shell,#specs,#footer{scroll-margin-top:96px;}
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(48% 40% at 12% 8%, rgba(149,115,209,.07), transparent 65%),
-      radial-gradient(45% 38% at 92% 22%, rgba(63,182,172,.06), transparent 65%),
-      radial-gradient(55% 42% at 50% 100%, rgba(209,68,95,.05), transparent 65%),
+      radial-gradient(48% 40% at 12% 8%, var(--wash-1), transparent 65%),
+      radial-gradient(45% 38% at 92% 22%, var(--wash-2), transparent 65%),
+      radial-gradient(55% 42% at 50% 100%, var(--wash-3), transparent 65%),
       radial-gradient(150% 120% at 50% -6%, var(--bg-2) 0%, var(--bg-1) 48%, var(--bg-0) 100%);
     color:var(--ink);
     font-family:var(--font-body);
@@ -88,10 +154,14 @@
 
   /* ---------- topbar ---------- */
   .topbar{
-    position:relative;z-index:5;
+    position:sticky;top:0;z-index:50;
     display:flex;align-items:center;justify-content:space-between;
-    padding:1.5rem clamp(1.25rem,4vw,3rem);
-    max-width:1600px;margin:0 auto;
+    padding:1.1rem clamp(1.25rem,4vw,3rem);
+    max-width:none;margin:0 auto;
+    background:var(--nav-bg);
+    backdrop-filter:blur(20px) saturate(160%);
+    -webkit-backdrop-filter:blur(20px) saturate(160%);
+    border-bottom:1px solid var(--line);
   }
   .wordmark{
     display:flex;align-items:center;gap:.6rem;
@@ -101,7 +171,39 @@
     width:9px;height:9px;background:var(--accent);border-radius:1.5px;
     box-shadow:0 0 10px 1px var(--accent-glass);
   }
-  .topbar-right{display:flex;align-items:center;gap:2rem;}
+  .topbar-right{display:flex;align-items:center;gap:1.5rem;}
+  /* theme selector — an explicit two-way pick, not just a toggle icon */
+  .theme-select{
+    position:relative;flex:none;
+    display:flex;align-items:center;
+    padding:3px;gap:1px;
+    border:1px solid var(--line-strong);border-radius:var(--radius-pill);
+    background:var(--glass);
+  }
+  .theme-select-thumb{
+    position:absolute;top:3px;left:3px;z-index:0;
+    width:calc(50% - 3px);height:calc(100% - 6px);
+    border-radius:var(--radius-pill);
+    background:var(--bg-0);box-shadow:var(--elev-1);
+    transform:translateX(0);
+    transition:transform .32s cubic-bezier(.22,1,.36,1),background-color .3s ease;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .theme-select-thumb{transform:translateX(100%);}
+  }
+  :root[data-theme="dark"] .theme-select-thumb{transform:translateX(100%);}
+  .theme-opt{
+    position:relative;z-index:1;
+    display:flex;align-items:center;gap:.4rem;
+    padding:.42rem .7rem;
+    border:none;background:none;cursor:pointer;border-radius:var(--radius-pill);
+    color:var(--ink-dim);font-family:var(--font-body);font-size:.78rem;font-weight:500;
+    transition:color .25s ease;
+  }
+  .theme-opt svg{width:14px;height:14px;flex:none;}
+  .theme-opt:hover{color:var(--ink);}
+  .theme-opt.active{color:var(--ink);font-weight:600;}
+  @media (max-width:640px){ .theme-opt span{display:none;} .theme-opt{padding:.42rem .55rem;} }
   .topnav{display:flex;gap:1.75rem;font-size:.78rem;color:var(--ink-dim);}
   .topnav a{text-decoration:none;transition:color .2s;border-bottom:1px solid transparent;padding-bottom:2px;}
   .topnav a:hover,.topnav a:focus-visible{color:var(--ink);border-color:var(--line-strong);}
@@ -111,36 +213,108 @@
   .hero{
     position:relative;z-index:2;
     max-width:1600px;margin:0 auto;
-    padding:.5rem clamp(1.25rem,4vw,3rem) 0;
+    padding:clamp(3rem,7vw,5.5rem) clamp(1.25rem,4vw,3rem) 0;
   }
   .hero-copy{
-    max-width:760px;
-    padding-bottom:1.75rem;
+    max-width:780px;
+    margin:0 auto;
+    padding-bottom:2.25rem;
+    text-align:center;
+    display:flex;flex-direction:column;align-items:center;
   }
-  .hero-copy .eyebrow{margin-bottom:1rem;}
+  .hero-copy .eyebrow{margin-bottom:1.25rem;}
   @keyframes riseIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-  .hero-copy .eyebrow,.hero-copy h1,.hero-copy p{animation:riseIn .8s cubic-bezier(.16,1,.3,1) both;}
+  .hero-copy .eyebrow,.hero-copy h1,.hero-copy p,.hero-cta{animation:riseIn .8s cubic-bezier(.16,1,.3,1) both;}
   .hero-copy .eyebrow{animation-delay:.05s;}
   .hero-copy h1{animation-delay:.14s;}
   .hero-copy p{animation-delay:.26s;}
+  .hero-cta{animation-delay:.36s;}
   @media (prefers-reduced-motion:reduce){
-    .hero-copy .eyebrow,.hero-copy h1,.hero-copy p{animation:none;}
+    .hero-copy .eyebrow,.hero-copy h1,.hero-copy p,.hero-cta{animation:none;}
+  }
+
+  /* scroll reveal — the same rise-and-fade the hero uses on load, but
+     triggered as each section actually enters view, page-wide */
+  .reveal{
+    opacity:0;transform:translateY(28px);
+    transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
   }
   .hero-copy h1{
     font-family:var(--font-display);
-    font-size:clamp(2.8rem,6.4vw,5rem);
-    line-height:.98;
-    font-weight:580;
-    letter-spacing:-.01em;
+    font-size:clamp(3.4rem,8vw,6.4rem);
+    line-height:1.02;
+    font-weight:600;
+    letter-spacing:-.03em;
     color:var(--ink);
-    margin:0 0 1.1rem;
+    margin:0 0 1.2rem;
   }
   .hero-copy h1 em{
-    font-style:italic;font-weight:460;color:var(--accent-soft);
+    font-style:normal;font-weight:600;color:var(--accent-soft);
   }
   .hero-copy p{
-    font-size:1.05rem;line-height:1.62;color:var(--ink-soft);max-width:54ch;font-weight:400;
+    font-size:clamp(1.1rem,1.6vw,1.35rem);line-height:1.5;color:var(--ink-soft);max-width:42ch;font-weight:400;letter-spacing:-.005em;
   }
+
+  /* Apple-style pill buttons */
+  .hero-cta{display:flex;align-items:center;justify-content:center;gap:1.6rem;margin-top:2.1rem;flex-wrap:wrap;}
+  .btn-pill{
+    display:inline-flex;align-items:center;gap:.5rem;
+    padding:.85rem 1.7rem;
+    border-radius:var(--radius-pill);
+    font-family:var(--font-body);font-size:1rem;font-weight:500;letter-spacing:-.01em;
+    text-decoration:none;cursor:pointer;border:1px solid transparent;
+    transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,background .2s ease,border-color .2s ease;
+  }
+  .btn-pill:active{transform:scale(.96);}
+  .btn-pill.primary{background:var(--accent);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 10px 26px -10px var(--accent-glass);}
+  .btn-pill.primary:hover,.btn-pill.primary:focus-visible{background:#e05270;box-shadow:0 1px 0 rgba(255,255,255,.14) inset,0 16px 34px -12px rgba(209,68,95,.5);}
+  .btn-pill.secondary{color:var(--ink);border-color:var(--line-strong);background:var(--glass);}
+  .btn-pill.secondary:hover,.btn-pill.secondary:focus-visible{border-color:var(--ink-dim);background:var(--glass-strong);}
+  .btn-pill.text{padding:.5rem 0;color:var(--circuit-blue);background:none;font-weight:500;}
+  .btn-pill.text:hover{color:var(--ink);}
+  .btn-pill.text svg{transition:transform .2s ease;}
+  .btn-pill.text:hover svg{transform:translateX(3px);}
+
+  /* quick-facts strip — a single glanceable row beneath the hero copy */
+  .quick-facts{
+    display:flex;align-items:stretch;justify-content:center;
+    max-width:1100px;margin:clamp(2.75rem,5vw,4rem) auto 0;
+    padding:0 clamp(1.25rem,4vw,3rem);
+  }
+  .quick-facts .qf{
+    flex:1;padding:0 clamp(.75rem,2vw,1.75rem);text-align:center;
+    border-left:1px solid var(--line);
+  }
+  .quick-facts .qf:first-child{border-left:none;}
+  .quick-facts .qf b{display:block;font-family:var(--font-display);font-size:clamp(1.15rem,2vw,1.5rem);font-weight:600;letter-spacing:-.02em;color:var(--ink);margin-bottom:.3rem;}
+  .quick-facts .qf span{font-size:.82rem;color:var(--ink-dim);letter-spacing:-.005em;}
+  @media (max-width:720px){
+    .quick-facts{flex-wrap:wrap;row-gap:1.5rem;}
+    .quick-facts .qf{flex:0 0 50%;border-left:none;}
+  }
+
+  /* product switcher — segmented pill tabs above the viewer */
+  .model-switch{
+    display:flex;justify-content:center;flex-wrap:wrap;gap:.5rem;
+    margin:0 0 1.1rem;
+  }
+  .model-tab{
+    padding:.55rem 1.15rem;
+    border-radius:var(--radius-pill);
+    border:1px solid var(--line-strong);
+    background:var(--glass);
+    color:var(--ink-dim);
+    font-family:var(--font-body);font-size:.85rem;font-weight:500;letter-spacing:-.005em;
+    cursor:pointer;transition:all .2s ease;
+    display:inline-flex;align-items:center;gap:.5rem;
+  }
+  .model-tab .dot{width:6px;height:6px;border-radius:50%;background:var(--cc,var(--ink-dim));}
+  .model-tab:hover{color:var(--ink);border-color:var(--ink-dim);}
+  .model-tab.active{color:var(--ink);background:var(--glass-strong);border-color:var(--cc,var(--accent));box-shadow:var(--elev-1);}
 
   /* ---------- viewport ---------- */
   .viewport-shell{
@@ -148,7 +322,7 @@
     width:100%;
     height:min(78vh,780px);
     min-height:460px;
-    border-radius:8px;
+    border-radius:22px;
     overflow:hidden;
     border:1px solid var(--line);
     background:var(--bg-1);
@@ -237,6 +411,12 @@
     display:flex;gap:1.1rem;font-family:'Fragment Mono',monospace;font-size:.68rem;color:var(--ink-dim);
   }
   .detail-panel .d-coord b{color:var(--ink-soft);font-weight:500;}
+  .detail-panel .d-buy{
+    display:inline-flex;align-items:center;gap:.4rem;margin-top:.9rem;
+    font-size:.82rem;font-weight:500;color:var(--circuit-blue);text-decoration:none;
+  }
+  .detail-panel .d-buy svg{transition:transform .2s ease;}
+  .detail-panel .d-buy:hover svg{transform:translateX(3px);}
 
   .legend-strip{
     position:absolute;left:16px;right:16px;bottom:16px;z-index:10;
@@ -252,7 +432,7 @@
     font-family:'Fragment Mono',monospace;font-size:.68rem;letter-spacing:.03em;
     padding:.42rem .7rem;
     border:1px solid var(--line-strong);border-radius:var(--radius-s);
-    background:rgba(10,11,7,.4);
+    background:var(--chip-bg);
     color:var(--ink-dim);cursor:pointer;white-space:nowrap;
     transition:all .18s ease;
   }
@@ -267,15 +447,10 @@
   }
   @media (max-width:900px){.zoom-readout{display:none;}.legend-strip{bottom:16px;}}
   @media (max-width:900px){.hint-panel{display:none;}}
+  .viewport-shell.accessory-mode .legend-strip,
+  .viewport-shell.accessory-mode .explore-btn{display:none;}
 
-  /* ---------- info cards row ---------- */
-  .info-row{
-    max-width:1600px;margin:2.75rem auto 0;
-    padding:0 clamp(1.25rem,4vw,3rem);
-    display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;
-  }
-  @media (max-width:980px){.info-row{grid-template-columns:repeat(2,1fr);}}
-  @media (max-width:560px){.info-row{grid-template-columns:1fr;}}
+  /* ---------- shared card base (reused by ecosystem grid) ---------- */
   .info-card{
     position:relative;overflow:hidden;
     padding:1.25rem 1.2rem 1.1rem;
@@ -290,6 +465,27 @@
   .info-card .i-label{font-family:'Fragment Mono',monospace;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.55rem;}
   .info-card .i-value{font-size:.95rem;font-weight:600;line-height:1.45;color:var(--ink);}
   .info-card .i-value em{color:var(--copper);font-style:normal;}
+
+  /* ---------- ecosystem / accessories ---------- */
+  .ecosystem{max-width:1600px;margin:clamp(5rem,10vw,8rem) auto 0;padding:0 clamp(1.25rem,4vw,3rem);}
+  .ecosystem-head{max-width:640px;margin:0 auto clamp(2.25rem,4vw,3rem);text-align:center;}
+  .ecosystem-head .eyebrow{justify-content:center;margin-bottom:1rem;}
+  .ecosystem-head h2{
+    font-family:var(--font-display);font-size:clamp(2rem,3.6vw,2.9rem);font-weight:600;letter-spacing:-.02em;
+    margin-bottom:.75rem;
+  }
+  .ecosystem-head p{font-size:1.02rem;line-height:1.55;color:var(--ink-dim);}
+  .ecosystem-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.9rem;
+  }
+  .product-card{cursor:pointer;text-align:left;}
+  .product-card .p-dot{width:8px;height:8px;border-radius:50%;background:var(--cc,var(--ink-dim));margin-bottom:.9rem;box-shadow:0 0 0 4px color-mix(in srgb, var(--cc,var(--ink-dim)) 18%, transparent);}
+  .product-card .p-name{font-family:var(--font-display);font-size:1.08rem;font-weight:600;letter-spacing:-.01em;color:var(--ink);margin-bottom:.35rem;}
+  .product-card .p-spec{font-size:.85rem;line-height:1.5;color:var(--ink-dim);margin-bottom:1rem;}
+  .product-card .p-link{font-size:.82rem;font-weight:500;color:var(--circuit-blue);display:inline-flex;align-items:center;gap:.35rem;}
+  .product-card .p-link svg{transition:transform .2s ease;}
+  .product-card:hover .p-link svg{transform:translateX(3px);}
+  .product-card.active{border-color:var(--cc,var(--accent));box-shadow:var(--elev-2);}
 
   /* ---------- specs sheet ---------- */
   .specs{
@@ -417,15 +613,22 @@
   var canvas = document.getElementById('bg-circuit');
   var ctx = canvas.getContext('2d');
   var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
-  var LINE_COLOR = 'rgba(243,239,228,0.045)';
-  var NODE_COLOR = 'rgba(243,239,228,0.05)';
+  var LINE_COLOR = 'rgba(20,20,18,0.045)';
+  var NODE_COLOR = 'rgba(20,20,18,0.05)';
 
   function seededRand(seed){
     var s = seed;
     return function(){ s = (s*9301+49297)%233280; return s/233280; };
   }
 
+  function readThemeColor(){
+    var rgb = getComputedStyle(document.documentElement).getPropertyValue('--trace-rgb').trim() || '20,20,18';
+    LINE_COLOR = 'rgba('+rgb+',0.05)';
+    NODE_COLOR = 'rgba('+rgb+',0.055)';
+  }
+
   function draw(){
+    readThemeColor();
     W = window.innerWidth; H = window.innerHeight;
     canvas.width = W*DPR; canvas.height = H*DPR;
     canvas.style.width = W+'px'; canvas.style.height = H+'px';
@@ -475,6 +678,7 @@
     resizeTimer = setTimeout(draw, 150);
   });
   draw();
+  window.__redrawBgCircuit = draw;
 })();
 </script>
 
@@ -488,6 +692,17 @@
         <a href="#footer">Colophon</a>
         <a href="https://www.raspberrypi.com" target="_blank" rel="noopener">raspberrypi.com &#8599;</a>
       </nav>
+      <div class="theme-select" id="themeSelect" role="radiogroup" aria-label="Theme">
+        <span class="theme-select-thumb" aria-hidden="true"></span>
+        <button class="theme-opt" type="button" data-theme-value="light" role="radio" aria-checked="true">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="4"/><path d="M10 1.5v2M10 16.5v2M18.5 10h-2M3.5 10h-2M15.7 4.3l-1.4 1.4M5.7 14.3l-1.4 1.4M15.7 15.7l-1.4-1.4M5.7 5.7 4.3 4.3"/></svg>
+          <span>Light</span>
+        </button>
+        <button class="theme-opt" type="button" data-theme-value="dark" role="radio" aria-checked="false">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 11.3A7.5 7.5 0 0 1 8.7 3 7.5 7.5 0 1 0 17 11.3Z"/></svg>
+          <span>Dark</span>
+        </button>
+      </div>
       <div class="contact-menu">
         <button class="contact-trigger" id="contactTrigger" aria-haspopup="true" aria-expanded="false">
           Contact
@@ -511,14 +726,22 @@
   <section class="hero">
     <div class="hero-copy">
       <span class="eyebrow"><b>U1</b> BCM2711 &middot; QUAD-CORE CORTEX-A72 &middot; REV 1.5</span>
-      <h1>Raspberry Pi <em>4</em> Model B</h1>
-      <p>An 85 &times; 56mm board carrying a full desktop-class computer &mdash; gigabit networking, dual 4K display output and a 40-pin expansion header, rendered here to the millimetre. Drag to orbit, scroll to inspect, click any part to read its spec.</p>
+      <h1>Raspberry Pi <em>4</em>.<br>The whole kit, in 3D.</h1>
+      <p>An 85 &times; 56mm board carrying a full desktop-class computer &mdash; and the accessories that go with it. Rendered to the millimetre, from the customer's own engineering files.</p>
+      <div class="hero-cta">
+        <a href="#viewport-shell" class="btn-pill primary" id="heroExploreBtn">Explore in 3D</a>
+        <a href="#specs" class="btn-pill text">See full specs
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h8M7 3l4 4-4 4"/></svg>
+        </a>
+      </div>
     </div>
+
+    <div class="model-switch" id="modelSwitch" role="tablist" aria-label="Choose a 3D model"></div>
 
     <div class="viewport-row">
       <div class="viewport-col">
         <div class="viewport-shell" id="viewport-shell">
-          <canvas id="pi-canvas" tabindex="0" role="img" aria-label="Interactive 3D model of the Raspberry Pi 4 Model B circuit board. Use arrow keys to rotate, plus and minus to zoom."></canvas>
+          <canvas id="pi-canvas" tabindex="0" role="img" aria-label="Interactive 3D model viewer. Use arrow keys to rotate, plus and minus to zoom."></canvas>
 
           <div class="veil" id="veil">
             <div class="veil-bar"><span></span></div>
@@ -545,45 +768,57 @@
         <h3 id="dName">Raspberry Pi 4 Model B</h3>
         <p id="dSpec">Hover or click any component on the board to inspect it. Nothing selected right now &mdash; showing the full-board overview.</p>
         <div class="d-coord mono" id="dCoord"><span>X <b>&mdash;</b></span><span>Y <b>&mdash;</b></span></div>
+        <a class="d-buy" id="dBuy" href="#" target="_blank" rel="noopener" hidden>Buy at raspberrypi.com
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+        </a>
       </aside>
     </div>
 
-    <div class="info-row">
-      <div class="info-card"><div class="i-label">Processor</div><div class="i-value">Broadcom BCM2711<br><em>Quad-core Cortex-A72 @ 1.5GHz</em></div></div>
-      <div class="info-card"><div class="i-label">Memory</div><div class="i-value">2GB / 4GB / 8GB<br><em>LPDDR4-3200 SDRAM</em></div></div>
-      <div class="info-card"><div class="i-label">Connectivity</div><div class="i-value">Gigabit Ethernet<br><em>802.11ac Wi-Fi &middot; Bluetooth 5.0</em></div></div>
-      <div class="info-card"><div class="i-label">Expansion</div><div class="i-value">40-pin GPIO header<br><em>27 usable general-purpose pins</em></div></div>
+    <div class="quick-facts">
+      <div class="qf reveal" style="transition-delay:0.00s"><b>Quad-core</b><span>Broadcom BCM2711 @ 1.5GHz</span></div>
+      <div class="qf reveal" style="transition-delay:0.07s"><b>Up to 8GB</b><span>LPDDR4-3200 SDRAM</span></div>
+      <div class="qf reveal" style="transition-delay:0.14s"><b>Dual 4K</b><span>Independent micro-HDMI outputs</span></div>
+      <div class="qf reveal" style="transition-delay:0.21s"><b>Gigabit</b><span>True native Ethernet + Wi-Fi 5</span></div>
     </div>
   </section>
 
+  <section class="ecosystem" id="ecosystem">
+    <div class="ecosystem-head reveal">
+      <span class="eyebrow"><b>KIT</b> DESIGNED TO WORK TOGETHER</span>
+      <h2>The essentials, modelled to scale.</h2>
+      <p>Every accessory above is switched into the same viewer &mdash; same lighting, same soft shadow, same millimetre accuracy as the board itself.</p>
+    </div>
+    <div class="ecosystem-grid" id="ecosystemGrid"></div>
+  </section>
+
   <section class="specs" id="specs">
-    <div class="specs-head">
+    <div class="specs-head reveal">
       <h2>Full specification sheet</h2>
       <span class="rev mono">REV 1.5 &middot; SKU RPI4-MODB &middot; <a href="https://www.raspberrypi.com/products/raspberry-pi-4-model-b/" target="_blank" rel="noopener">Official product page &#8599;</a></span>
     </div>
     <div class="sheet">
-      <div class="sheet-row"><div class="s-label">CPU</div><div class="s-val"><b>Broadcom BCM2711</b>, quad-core Cortex-A72 (ARM v8-A) 64-bit SoC @ 1.5GHz, 28nm process.</div></div>
-      <div class="sheet-row"><div class="s-label">GPU</div><div class="s-val"><b>VideoCore VI</b>, OpenGL ES 3.1 &amp; Vulkan 1.0, HEVC decode at 4Kp60.</div></div>
-      <div class="sheet-row"><div class="s-label">Memory</div><div class="s-val"><b>2GB / 4GB / 8GB</b> LPDDR4-3200 SDRAM, shared with GPU.</div></div>
-      <div class="sheet-row"><div class="s-label">Storage</div><div class="s-val"><b>microSD</b> slot for OS and data, with USB and network boot support.</div></div>
-      <div class="sheet-row"><div class="s-label">Networking</div><div class="s-val"><b>Gigabit Ethernet</b> (true native, not USB-bridged), dual-band 802.11ac Wi-Fi, Bluetooth 5.0 / BLE.</div></div>
-      <div class="sheet-row"><div class="s-label">Video Out</div><div class="s-val">Dual <b>micro-HDMI</b>, independent 4K displays &mdash; 4Kp60 on one port, 4Kp30 on both simultaneously.</div></div>
-      <div class="sheet-row"><div class="s-label">USB</div><div class="s-val">2 &times; <b>USB 3.0</b> (5Gbps SuperSpeed), 2 &times; <b>USB 2.0</b> (480Mbps), all Type-A.</div></div>
-      <div class="sheet-row"><div class="s-label">Camera &amp; Display</div><div class="s-val">2-lane <b>MIPI CSI-2</b> camera connector, <b>MIPI DSI</b> display connector.</div></div>
-      <div class="sheet-row"><div class="s-label">GPIO</div><div class="s-val">Standard <b>40-pin</b> header, 2.54mm pitch, 27 GPIO with UART, SPI, I&sup2;C and PWM.</div></div>
-      <div class="sheet-row"><div class="s-label">Audio</div><div class="s-val">4-pole <b>3.5mm</b> jack &mdash; composite video plus stereo analogue audio.</div></div>
-      <div class="sheet-row"><div class="s-label">Power</div><div class="s-val"><b>USB-C</b>, 5V / 3A, with 4-pin <b>PoE</b> header for the official PoE HAT.</div></div>
-      <div class="sheet-row"><div class="s-label">Dimensions</div><div class="s-val">PCB <b>85 &times; 56 &times; 1.2mm</b>, &sim;17mm overall with connectors, &sim;46g.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.00s"><div class="s-label">CPU</div><div class="s-val"><b>Broadcom BCM2711</b>, quad-core Cortex-A72 (ARM v8-A) 64-bit SoC @ 1.5GHz, 28nm process.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.00s"><div class="s-label">GPU</div><div class="s-val"><b>VideoCore VI</b>, OpenGL ES 3.1 &amp; Vulkan 1.0, HEVC decode at 4Kp60.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.06s"><div class="s-label">Memory</div><div class="s-val"><b>2GB / 4GB / 8GB</b> LPDDR4-3200 SDRAM, shared with GPU.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.06s"><div class="s-label">Storage</div><div class="s-val"><b>microSD</b> slot for OS and data, with USB and network boot support.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.12s"><div class="s-label">Networking</div><div class="s-val"><b>Gigabit Ethernet</b> (true native, not USB-bridged), dual-band 802.11ac Wi-Fi, Bluetooth 5.0 / BLE.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.12s"><div class="s-label">Video Out</div><div class="s-val">Dual <b>micro-HDMI</b>, independent 4K displays &mdash; 4Kp60 on one port, 4Kp30 on both simultaneously.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.18s"><div class="s-label">USB</div><div class="s-val">2 &times; <b>USB 3.0</b> (5Gbps SuperSpeed), 2 &times; <b>USB 2.0</b> (480Mbps), all Type-A.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.18s"><div class="s-label">Camera &amp; Display</div><div class="s-val">2-lane <b>MIPI CSI-2</b> camera connector, <b>MIPI DSI</b> display connector.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.24s"><div class="s-label">GPIO</div><div class="s-val">Standard <b>40-pin</b> header, 2.54mm pitch, 27 GPIO with UART, SPI, I&sup2;C and PWM.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.24s"><div class="s-label">Audio</div><div class="s-val">4-pole <b>3.5mm</b> jack &mdash; composite video plus stereo analogue audio.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.30s"><div class="s-label">Power</div><div class="s-val"><b>USB-C</b>, 5V / 3A, with 4-pin <b>PoE</b> header for the official PoE HAT.</div></div>
+      <div class="sheet-row reveal" style="transition-delay:0.30s"><div class="s-label">Dimensions</div><div class="s-val">PCB <b>85 &times; 56 &times; 1.2mm</b>, &sim;17mm overall with connectors, &sim;46g.</div></div>
     </div>
   </section>
 
   <footer id="footer">
     <div class="footer-top">
-      <div class="footer-brand">
+      <div class="footer-brand reveal">
         <div class="wordmark"><span class="chip"></span> RASPBERRY&nbsp;PI 4B / VISUAL DATASHEET</div>
         <p>An independent, millimetre-accurate WebGL visualization built from the customer's own SketchUp assembly. Not affiliated with or endorsed by Raspberry Pi Trading Ltd.</p>
       </div>
-      <div class="footer-col">
+      <div class="footer-col reveal" style="transition-delay:.08s">
         <div class="footer-heading">Raspberry Pi</div>
         <a href="https://www.raspberrypi.com" target="_blank" rel="noopener">Official site <span class="arrow">&#8599;</span></a>
         <a href="https://www.raspberrypi.com/products/raspberry-pi-4-model-b/" target="_blank" rel="noopener">Buy the Pi 4 <span class="arrow">&#8599;</span></a>
@@ -591,7 +826,7 @@
         <a href="https://forums.raspberrypi.com" target="_blank" rel="noopener">Forums <span class="arrow">&#8599;</span></a>
         <a href="https://github.com/raspberrypi" target="_blank" rel="noopener">GitHub <span class="arrow">&#8599;</span></a>
       </div>
-      <div class="footer-col">
+      <div class="footer-col reveal" style="transition-delay:.16s">
         <div class="footer-heading">This Build</div>
         <a href="#viewport-shell">Board viewer</a>
         <a href="#specs">Specification sheet</a>
@@ -730,6 +965,93 @@ var hoverGlow = (function(){
 })();
 
 /* =========================================================================
+   SHARED 3D HELPERS — reused by the board and every accessory model, so
+   every product in the viewer gets identical lighting, shadow and "product
+   photography" reflection treatment.
+   ========================================================================= */
+function computeFitRadius(box){
+  var sphere = box.getBoundingSphere(new THREE.Sphere());
+  return (sphere.radius / Math.sin(THREE.MathUtils.degToRad(camera.fov) / 2)) * 1.28;
+}
+
+function makeShadowCatcher(size){
+  var cw = 512, ch = Math.round(cw * (size.z / Math.max(size.x, 1)));
+  ch = Math.max(64, Math.min(ch, 1024));
+  var sc = document.createElement('canvas'); sc.width = cw; sc.height = ch;
+  var sctx = sc.getContext('2d');
+  var grad = sctx.createRadialGradient(cw/2, ch/2, 0, cw/2, ch/2, cw/2);
+  grad.addColorStop(0, 'rgba(0,0,0,0.5)');
+  grad.addColorStop(0.7, 'rgba(0,0,0,0.2)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  sctx.fillStyle = grad; sctx.fillRect(0, 0, cw, ch);
+  var tex = new THREE.CanvasTexture(sc);
+  var mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false });
+  var plane = new THREE.Mesh(new THREE.PlaneGeometry(Math.max(size.x,1) * 1.9, Math.max(size.z,1) * 1.9), mat);
+  plane.rotation.x = -Math.PI / 2;
+  plane.position.y = 0.02;
+  return plane;
+}
+
+/* a soft, uniformly-faded mirror of a model — cheap stand-in for a real
+   reflection, reads as a glossy product-photography stage */
+function makeReflection(visualGroup){
+  var refl = visualGroup.clone(true);
+  refl.traverse(function(o){
+    if(!o.isMesh) return;
+    var mats = Array.isArray(o.material) ? o.material.map(function(m){ return m.clone(); }) : o.material.clone();
+    (Array.isArray(mats) ? mats : [mats]).forEach(function(m){ m.transparent = true; m.opacity = 0.13; m.depthWrite = false; });
+    o.material = mats;
+    o.castShadow = false; o.receiveShadow = false;
+  });
+  refl.scale.y = -1;
+  refl.renderOrder = -1;
+  return refl;
+}
+
+/* recentre a group on the origin (x/z centred, resting on y=0) and bundle
+   it with a shadow catcher + reflection — the same finishing pass for
+   every product, board included */
+function finishProduct(visualGroup){
+  var box = new THREE.Box3().setFromObject(visualGroup);
+  var center = box.getCenter(new THREE.Vector3());
+  visualGroup.position.x -= center.x;
+  visualGroup.position.z -= center.z;
+  visualGroup.position.y -= box.min.y;
+  visualGroup.traverse(function(o){ if(o.isMesh){ o.castShadow = true; o.receiveShadow = true; } });
+
+  box = new THREE.Box3().setFromObject(visualGroup);
+  var size = box.getSize(new THREE.Vector3());
+  var reflection = makeReflection(visualGroup);
+  var shadowPlane = makeShadowCatcher(size);
+
+  var product = new THREE.Group();
+  product.add(visualGroup, reflection, shadowPlane);
+  return { group: product, fitRadius: computeFitRadius(box) };
+}
+
+function accBox(w,h,d,mat){ return new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat); }
+function accCyl(r1,r2,h,mat,seg){ return new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,seg||20), mat); }
+
+var ACC_MAT = {
+  plasticWhite: new THREE.MeshStandardMaterial({ color:0xefece0, roughness:0.55, metalness:0.04 }),
+  plasticGrey:  new THREE.MeshStandardMaterial({ color:0x3c3f46, roughness:0.5, metalness:0.1 }),
+  plasticBlack: new THREE.MeshStandardMaterial({ color:0x0e0e10, roughness:0.55, metalness:0.06 }),
+  plasticRed:   new THREE.MeshStandardMaterial({ color:0xaa2f3a, roughness:0.5, metalness:0.05 }),
+  pcbGreen:     new THREE.MeshStandardMaterial({ color:0x173d1a, roughness:0.7, metalness:0.05 }),
+  gold:         new THREE.MeshStandardMaterial({ color:0xd9b354, roughness:0.4, metalness:0.6 }),
+  metal:        new THREE.MeshStandardMaterial({ color:0xc7ccd6, roughness:0.32, metalness:0.65 }),
+  lens:         new THREE.MeshStandardMaterial({ color:0x0a0b0e, roughness:0.15, metalness:0.4 }),
+  cable:        new THREE.MeshStandardMaterial({ color:0x141416, roughness:0.75, metalness:0.05 }),
+  ribbon:       new THREE.MeshStandardMaterial({ color:0x8b8d93, roughness:0.5, metalness:0.1 })
+};
+
+function tubeAlong(points, radius, mat, segments){
+  var curve = new THREE.CatmullRomCurve3(points.map(function(p){ return new THREE.Vector3(p[0],p[1],p[2]); }));
+  var geo = new THREE.TubeGeometry(curve, segments||24, radius, 8, false);
+  return new THREE.Mesh(geo, mat);
+}
+
+/* =========================================================================
    BOARD GROUP + COMPONENT REGISTRY
    Real geometry: the customer's own SketchUp assembly (Board+Assembly.skp),
    converted to glTF via Blender and embedded below as base64 so this stays
@@ -794,10 +1116,12 @@ loader.parse(b64ToArrayBuffer(MODEL_B64), '', function(gltf){
   model.position.z -= center.z;
   model.position.y -= box.min.y;
   boardGroup.add(model);
+  boardGroup.add(makeReflection(model));
 
-  var sphere = box.getBoundingSphere(new THREE.Sphere());
-  var fitRadius = (sphere.radius / Math.sin(THREE.MathUtils.degToRad(camera.fov) / 2)) * 1.28;
+  box = new THREE.Box3().setFromObject(model);
+  var fitRadius = computeFitRadius(box);
   rig.baseRadius = fitRadius;
+  PRODUCTS[0].fitRadius = fitRadius;
 
   var byDesignator = {};
   model.traverse(function(o){
@@ -1057,7 +1381,12 @@ function hideTooltip(){
 }
 
 var dCat = document.getElementById('dCat'), dName = document.getElementById('dName'),
-    dSpec = document.getElementById('dSpec'), dCoord = document.getElementById('dCoord');
+    dSpec = document.getElementById('dSpec'), dCoord = document.getElementById('dCoord'),
+    dBuy = document.getElementById('dBuy');
+function syncBuyLink(){
+  if(activeProduct && activeProduct.buy){ dBuy.href = activeProduct.buy; dBuy.hidden = false; }
+  else { dBuy.hidden = true; }
+}
 function updateDetailPanel(r){
   dCat.textContent = r.category.toUpperCase();
   dName.textContent = r.name;
@@ -1065,14 +1394,16 @@ function updateDetailPanel(r){
   dCoord.innerHTML = '<span>X <b>'+r.x+'</b></span><span>Y <b>'+r.y+'</b></span>';
   document.getElementById('detailPanel').style.setProperty('--cc', CATEGORY_COLOR[r.category] || '');
   setActiveLegend(r.id);
+  syncBuyLink();
 }
 function resetDetailPanel(){
   dCat.textContent = 'OVERVIEW';
-  dName.textContent = 'Raspberry Pi 4 Model B';
-  dSpec.textContent = 'Hover or click any component on the board to inspect it. Nothing selected right now — showing the full-board overview.';
+  dName.textContent = activeProduct ? activeProduct.name : 'Raspberry Pi 4 Model B';
+  dSpec.textContent = activeProduct ? activeProduct.overview : 'Hover or click any component on the board to inspect it. Nothing selected right now — showing the full-board overview.';
   dCoord.innerHTML = '<span>X <b>&mdash;</b></span><span>Y <b>&mdash;</b></span>';
   document.getElementById('detailPanel').style.removeProperty('--cc');
   setActiveLegend(null);
+  syncBuyLink();
 }
 
 function handleClick(e){
@@ -1199,6 +1530,46 @@ document.querySelectorAll('.info-card').forEach(function(el){ attachTilt(el, 5);
 attachTilt(document.getElementById('detailPanel'), 4);
 
 /* =========================================================================
+   THEME TOGGLE — light by default, dark on request or OS preference;
+   an explicit pick always wins and is remembered.
+   ========================================================================= */
+(function(){
+  var group = document.getElementById('themeSelect');
+  if(!group) return;
+  var opts = Array.prototype.slice.call(group.querySelectorAll('.theme-opt'));
+  var mql = window.matchMedia('(prefers-color-scheme: dark)');
+  function currentTheme(){
+    var explicit = document.documentElement.getAttribute('data-theme');
+    if(explicit) return explicit;
+    return mql.matches ? 'dark' : 'light';
+  }
+  function sync(){
+    var t = currentTheme();
+    opts.forEach(function(opt){
+      var isActive = opt.dataset.themeValue === t;
+      opt.classList.toggle('active', isActive);
+      opt.setAttribute('aria-checked', String(isActive));
+    });
+  }
+  function setTheme(value){
+    document.documentElement.setAttribute('data-theme', value);
+    try{ localStorage.setItem('pi-theme', value); }catch(e){}
+    sync();
+    if(window.__redrawBgCircuit) window.__redrawBgCircuit();
+  }
+  opts.forEach(function(opt){
+    opt.addEventListener('click', function(){ setTheme(opt.dataset.themeValue); });
+  });
+  mql.addEventListener('change', function(){
+    if(!document.documentElement.getAttribute('data-theme')){
+      sync();
+      if(window.__redrawBgCircuit) window.__redrawBgCircuit();
+    }
+  });
+  sync();
+})();
+
+/* =========================================================================
    CONTACT DROPDOWN
    ========================================================================= */
 (function(){
@@ -1223,6 +1594,220 @@ attachTilt(document.getElementById('detailPanel'), 4);
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape') close();
   });
+})();
+
+/* =========================================================================
+   ACCESSORY MODELS — the rest of the kit, modelled procedurally at the
+   same millimetre scale as the board, each finished with the shared
+   shadow + reflection treatment from finishProduct().
+   ========================================================================= */
+function buildPowerSupply(){
+  var g = new THREE.Group();
+  var body = accBox(30,34,26, ACC_MAT.plasticWhite);
+  body.position.y = 17;
+  g.add(body);
+  var label = accBox(15,15,0.6, ACC_MAT.plasticGrey);
+  label.position.set(0,20,13.05);
+  g.add(label);
+  var dot = accCyl(1.5,1.5,0.5,ACC_MAT.plasticRed,20);
+  dot.rotation.x = Math.PI/2; dot.position.set(0,20,13.5);
+  g.add(dot);
+  [-4,4].forEach(function(x){
+    var pin = accBox(1.4,10,1.8, ACC_MAT.metal);
+    pin.position.set(x, 30, -14.5);
+    g.add(pin);
+  });
+  var cable = tubeAlong([[0,2,13],[2,-8,20],[10,-14,26],[24,-15,30]], 1.6, ACC_MAT.cable, 24);
+  g.add(cable);
+  var plugHousing = accBox(6,4.4,4, ACC_MAT.plasticBlack);
+  plugHousing.position.set(24.5,-15,29.5);
+  g.add(plugHousing);
+  var plugMetal = accBox(4,2.6,4.5, ACC_MAT.metal);
+  plugMetal.position.set(26.5,-15,32.5);
+  g.add(plugMetal);
+  return g;
+}
+
+function buildCase(){
+  var g = new THREE.Group();
+  var base = accBox(92,16,64, ACC_MAT.plasticRed);
+  base.position.y = 8;
+  g.add(base);
+  var lid = accBox(92,10,64, ACC_MAT.plasticWhite);
+  lid.position.y = 21;
+  g.add(lid);
+  for(var i=0;i<3;i++){
+    var hole = accCyl(2,2,1,ACC_MAT.plasticBlack,20);
+    hole.position.set(-10+i*10, 26.05, -20);
+    g.add(hole);
+  }
+  for(var v=0; v<4; v++){
+    var vent = accBox(1.2,3,9, ACC_MAT.plasticBlack);
+    vent.position.set(-46.4, 12, -19+v*13);
+    g.add(vent);
+  }
+  return g;
+}
+
+function buildSDCard(){
+  var g = new THREE.Group();
+  var body = accBox(15,1,11, ACC_MAT.plasticBlack);
+  g.add(body);
+  var contacts = accBox(15,0.16,5, ACC_MAT.gold);
+  contacts.position.set(0,-0.58,4.5);
+  g.add(contacts);
+  var label = accBox(13,0.16,7, ACC_MAT.plasticWhite);
+  label.position.set(-0.5,0.58,-1.5);
+  g.add(label);
+  return g;
+}
+
+function buildCamera(){
+  var g = new THREE.Group();
+  var pcb = accBox(25,1.2,24, ACC_MAT.pcbGreen);
+  g.add(pcb);
+  var lensBase = accCyl(5,5,3,ACC_MAT.plasticBlack,24);
+  lensBase.position.y = 2.7;
+  g.add(lensBase);
+  var lens = accCyl(3.4,3.4,4,ACC_MAT.lens,24);
+  lens.position.y = 6.2;
+  g.add(lens);
+  var connector = accBox(16,2,4, ACC_MAT.plasticBlack);
+  connector.position.set(0, 1.8, 11.5);
+  g.add(connector);
+  var ribbon = tubeAlong([[0,2,13],[0,-6,22],[0,-11,34]], 3.4, ACC_MAT.ribbon, 16);
+  g.add(ribbon);
+  return g;
+}
+
+function buildHdmiCable(){
+  var g = new THREE.Group();
+  var cable = tubeAlong([[-40,0,0],[-10,8,6],[10,-6,-4],[40,0,0]], 2.2, ACC_MAT.cable, 40);
+  g.add(cable);
+  var hdmiHousing = accBox(15,7,3, ACC_MAT.plasticBlack);
+  hdmiHousing.position.set(-42,0,0);
+  g.add(hdmiHousing);
+  var hdmiMetal = accBox(13,5.5,6, ACC_MAT.metal);
+  hdmiMetal.position.set(-45.5,0,0);
+  g.add(hdmiMetal);
+  var microHousing = accBox(8,4,2.4, ACC_MAT.plasticBlack);
+  microHousing.position.set(42,0,0);
+  g.add(microHousing);
+  var microMetal = accBox(6.4,2.7,4, ACC_MAT.metal);
+  microMetal.position.set(45,0,0);
+  g.add(microMetal);
+  return g;
+}
+
+/* =========================================================================
+   PRODUCT SWITCHER — one viewer, several products. Board keeps its full
+   per-part registry/legend/tour; accessories are single hero objects with
+   their own short spec and a link to the official product page.
+   ========================================================================= */
+var PRODUCTS = [
+  { id:'board', name:'Raspberry Pi 4 Model B', tagline:'Quad-core Cortex-A72 · up to 8GB RAM', overview:'Hover or click any component on the board to inspect it. Nothing selected right now — showing the full-board overview.', buy:'https://www.raspberrypi.com/products/raspberry-pi-4-model-b/', group:boardGroup, fitRadius:205, hasParts:true, cc:'var(--cat-core)' },
+  { id:'power', name:'15W USB-C Power Supply', tagline:'5.1V / 3A, the load-tested official supply', overview:'The official Raspberry Pi 15W USB-C power supply — a stable 5.1V rail even under full CPU and accessory load.', buy:'https://www.raspberrypi.com/products/type-c-power-supply/', build:buildPowerSupply, hasParts:false, cc:'var(--cat-power)' },
+  { id:'case', name:'Raspberry Pi 4 Case', tagline:'ABS shell, red and white, clip-on lid', overview:'The official two-piece case — ABS construction, full port access, and compatible with the official case fan.', buy:'https://www.raspberrypi.com/products/raspberry-pi-4-case/', build:buildCase, hasParts:false, cc:'var(--cat-expansion)' },
+  { id:'sd', name:'Raspberry Pi SD Card', tagline:'Pre-loaded, speed-class tested storage', overview:'Official Raspberry Pi microSD — tuned and tested for reliable boot and sustained read/write on Pi hardware.', buy:'https://www.raspberrypi.com/products/sd-cards/', build:buildSDCard, hasParts:false, cc:'var(--cat-storage)' },
+  { id:'camera', name:'Camera Module 3', tagline:'12MP, autofocus, HDR', overview:'Camera Module 3 — a 12-megapixel autofocus sensor with HDR, connected over the board’s CSI-2 ribbon.', buy:'https://www.raspberrypi.com/products/camera-module-3/', build:buildCamera, hasParts:false, cc:'var(--cat-video)' },
+  { id:'hdmi', name:'Micro-HDMI to HDMI Cable', tagline:'Drives one of the board’s two 4K outputs', overview:'The official micro-HDMI to full-size HDMI cable — one for each of the board’s two independent display outputs.', buy:'https://www.raspberrypi.com/products/micro-hdmi-to-standard-hdmi-a-cable/', build:buildHdmiCable, hasParts:false, cc:'var(--cat-io)' }
+];
+
+PRODUCTS.forEach(function(p){
+  if(p.id === 'board') return;
+  var built = finishProduct(p.build());
+  built.group.visible = false;
+  built.group.rotation.y = Math.PI * -0.1;
+  scene.add(built.group);
+  p.group = built.group;
+  p.fitRadius = built.fitRadius;
+});
+
+var activeProduct = null;
+var modelSwitchEl = document.getElementById('modelSwitch');
+var ecosystemGridEl = document.getElementById('ecosystemGrid');
+var viewportShellEl = document.getElementById('viewport-shell');
+var hintPanelText = document.querySelector('.hint-panel span:last-child');
+
+function switchProduct(id){
+  var p = PRODUCTS.filter(function(x){ return x.id===id; })[0];
+  if(!p || p===activeProduct) return;
+  PRODUCTS.forEach(function(x){ if(x.group) x.group.visible = (x===p); });
+  activeProduct = p;
+  rig.baseRadius = p.fitRadius;
+  rig.targetPoint.set(0,0,0);
+  rig.targetZoom = 1;
+  rig.focused = false;
+  stopTour();
+  resetDetailPanel();
+
+  viewportShellEl.classList.toggle('accessory-mode', !p.hasParts);
+  if(hintPanelText){
+    hintPanelText.textContent = p.hasParts
+      ? 'DRAG TO ORBIT · SCROLL TO ZOOM · CLICK A PART'
+      : 'DRAG TO ORBIT · SCROLL TO ZOOM';
+  }
+
+  Object.keys(modelTabEls).forEach(function(k){ modelTabEls[k].classList.toggle('active', k===id); });
+  Object.keys(productCardEls).forEach(function(k){ productCardEls[k].classList.toggle('active', k===id); });
+}
+
+var modelTabEls = {}, productCardEls = {};
+PRODUCTS.forEach(function(p){
+  var tab = document.createElement('button');
+  tab.className = 'model-tab';
+  tab.type = 'button';
+  tab.setAttribute('role','tab');
+  tab.style.setProperty('--cc', p.cc || '');
+  var dot = document.createElement('span'); dot.className = 'dot';
+  tab.appendChild(dot);
+  tab.appendChild(document.createTextNode(p.name));
+  tab.addEventListener('click', function(){ switchProduct(p.id); });
+  modelSwitchEl.appendChild(tab);
+  modelTabEls[p.id] = tab;
+
+  if(p.id === 'board') return;
+  var card = document.createElement('div');
+  card.className = 'info-card product-card reveal';
+  card.style.transitionDelay = ((PRODUCTS.indexOf(p)-1) * 0.07) + 's';
+  card.style.setProperty('--cc', p.cc || '');
+  card.innerHTML =
+    '<div class="p-dot"></div>' +
+    '<div class="p-name"></div>' +
+    '<div class="p-spec"></div>' +
+    '<span class="p-link">View in 3D <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h8M6 2l4 4-4 4"/></svg></span>';
+  card.querySelector('.p-name').textContent = p.name;
+  card.querySelector('.p-spec').textContent = p.tagline;
+  card.addEventListener('click', function(){
+    switchProduct(p.id);
+    document.getElementById('viewport-shell').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  });
+  ecosystemGridEl.appendChild(card);
+  productCardEls[p.id] = card;
+  attachTilt(card, 4);
+});
+
+switchProduct('board');
+
+/* =========================================================================
+   SCROLL REVEAL — page-wide, not just the viewer. Each .reveal element
+   fades and rises into place the first time it crosses into view.
+   ========================================================================= */
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window) || reduceMotion){
+    els.forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function(el){ io.observe(el); });
 })();
 
 /* =========================================================================
